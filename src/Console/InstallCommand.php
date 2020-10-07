@@ -78,8 +78,8 @@ class InstallCommand extends Command
     {
         if (! Str::contains($appConfig = file_get_contents(config_path('app.php')), 'App\\Providers\\FortifyServiceProvider::class')) {
             file_put_contents(config_path('app.php'), str_replace(
-                "App\\Providers\RouteServiceProvider::class,".PHP_EOL,
-                "App\\Providers\RouteServiceProvider::class,".PHP_EOL."        App\Providers\FortifyServiceProvider::class,".PHP_EOL,
+                "App\\Providers\RouteServiceProvider::class,",
+                "App\\Providers\RouteServiceProvider::class,".PHP_EOL."        App\Providers\FortifyServiceProvider::class,",
                 $appConfig
             ));
         }
@@ -133,9 +133,9 @@ class InstallCommand extends Command
         // NPM Packages...
         $this->updateNodePackages(function ($packages) {
             return [
-                '@tailwindcss/ui' => '^0.5.0',
+                '@tailwindcss/ui' => '^0.6.0',
                 'postcss-import' => '^12.0.1',
-                'tailwindcss' => '^1.3.0',
+                'tailwindcss' => '^1.8.0',
             ] + $packages;
         });
 
@@ -179,6 +179,7 @@ class InstallCommand extends Command
 
         // Single Blade Views...
         copy(__DIR__.'/../../stubs/livewire/resources/views/dashboard.blade.php', resource_path('views/dashboard.blade.php'));
+        copy(__DIR__.'/../../stubs/livewire/resources/views/navigation-dropdown.blade.php', resource_path('views/navigation-dropdown.blade.php'));
 
         // Other Views...
         (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/livewire/resources/views/api', resource_path('views/api'));
@@ -246,7 +247,7 @@ EOF;
     protected function installInertiaStack()
     {
         // Install Inertia...
-        (new Process(['composer', 'require', 'inertiajs/inertia-laravel', 'laravel/sanctum:^2.6'], base_path()))
+        (new Process(['composer', 'require', 'inertiajs/inertia-laravel', 'laravel/sanctum:^2.6', 'tightenco/ziggy'], base_path()))
                 ->setTimeout(null)
                 ->run(function ($type, $output) {
                     $this->output->write($output);
@@ -255,13 +256,13 @@ EOF;
         // Install NPM packages...
         $this->updateNodePackages(function ($packages) {
             return [
-                '@inertiajs/inertia' => '^0.1.7',
-                '@inertiajs/inertia-vue' => '^0.1.2',
-                '@tailwindcss/ui' => '^0.1.3',
+                '@inertiajs/inertia' => '^0.3.0',
+                '@inertiajs/inertia-vue' => '^0.2.0',
+                '@tailwindcss/ui' => '^0.6.0',
                 'laravel-jetstream' => '^0.0.3',
                 'portal-vue' => '^2.1.7',
                 'postcss-import' => '^12.0.1',
-                'tailwindcss' => '^1.3.0',
+                'tailwindcss' => '^1.8.0',
                 'vue' => '^2.5.17',
                 'vue-template-compiler' => '^2.6.10',
             ] + $packages;
@@ -433,8 +434,8 @@ EOF;
     {
         if (! Str::contains($appConfig = file_get_contents(config_path('app.php')), 'App\\Providers\\JetstreamServiceProvider::class')) {
             file_put_contents(config_path('app.php'), str_replace(
-                "App\\Providers\FortifyServiceProvider::class,".PHP_EOL,
-                "App\\Providers\FortifyServiceProvider::class,".PHP_EOL."        App\Providers\JetstreamServiceProvider::class,".PHP_EOL,
+                "App\\Providers\FortifyServiceProvider::class,",
+                "App\\Providers\FortifyServiceProvider::class,".PHP_EOL."        App\Providers\JetstreamServiceProvider::class,",
                 $appConfig
             ));
         }

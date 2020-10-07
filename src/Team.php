@@ -7,20 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 abstract class Team extends Model
 {
     /**
-     * The "type" of the primary key ID.
-     *
-     * @var string
-     */
-    protected $keyType = 'string';
-
-    /**
-     * Indicates if the IDs are auto-incrementing.
-     *
-     * @var bool
-     */
-    public $incrementing = false;
-
-    /**
      * Get the owner of the team.
      */
     public function owner()
@@ -43,10 +29,9 @@ abstract class Team extends Model
      */
     public function users()
     {
-        return $this->belongsToMany(Jetstream::userModel())
+        return $this->belongsToMany(Jetstream::userModel(), Jetstream::membershipModel())
                         ->withPivot('role')
                         ->withTimestamps()
-                        ->using(Jetstream::membershipModel())
                         ->as('membership');
     }
 

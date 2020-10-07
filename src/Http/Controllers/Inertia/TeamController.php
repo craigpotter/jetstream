@@ -18,10 +18,10 @@ class TeamController extends Controller
      * Show the team management screen.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  string  $teamId
+     * @param  int  $teamId
      * @return \Inertia\Response
      */
-    public function show(Request $request, string $teamId)
+    public function show(Request $request, $teamId)
     {
         $team = Jetstream::newTeamModel()->findOrFail($teamId);
 
@@ -29,7 +29,7 @@ class TeamController extends Controller
             abort(403);
         }
 
-        return Inertia::render('Teams/Show', [
+        return Jetstream::inertia()->render($request, 'Teams/Show', [
             'team' => $team->load('owner', 'users'),
             'availableRoles' => array_values(Jetstream::$roles),
             'availablePermissions' => Jetstream::$permissions,
@@ -71,10 +71,10 @@ class TeamController extends Controller
      * Update the given team's name.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  string  $teamId
+     * @param  int  $teamId
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, string $teamId)
+    public function update(Request $request, $teamId)
     {
         $team = Jetstream::newTeamModel()->findOrFail($teamId);
 
@@ -87,10 +87,10 @@ class TeamController extends Controller
      * Delete the given team.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  string  $teamId
+     * @param  int  $teamId
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(Request $request, string $teamId)
+    public function destroy(Request $request, $teamId)
     {
         $team = Jetstream::newTeamModel()->findOrFail($teamId);
 
