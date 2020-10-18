@@ -108,7 +108,7 @@
                                 <!-- Leave Team -->
                                 <button class="cursor-pointer ml-6 text-sm text-red-500 focus:outline-none"
                                                     @click="confirmLeavingTeam"
-                                                    v-if="$page.user.id === user.id">
+                                                    v-if="$page.props.user.id === user.id">
                                     Leave
                                 </button>
 
@@ -216,18 +216,18 @@
 </template>
 
 <script>
-    import JetActionMessage from './../../Jetstream/ActionMessage'
-    import JetActionSection from './../../Jetstream/ActionSection'
-    import JetButton from './../../Jetstream/Button'
-    import JetConfirmationModal from './../../Jetstream/ConfirmationModal'
-    import JetDangerButton from './../../Jetstream/DangerButton'
-    import JetDialogModal from './../../Jetstream/DialogModal'
-    import JetFormSection from './../../Jetstream/FormSection'
-    import JetInput from './../../Jetstream/Input'
-    import JetInputError from './../../Jetstream/InputError'
-    import JetLabel from './../../Jetstream/Label'
-    import JetSecondaryButton from './../../Jetstream/SecondaryButton'
-    import JetSectionBorder from './../../Jetstream/SectionBorder'
+    import JetActionMessage from '@/Jetstream/ActionMessage'
+    import JetActionSection from '@/Jetstream/ActionSection'
+    import JetButton from '@/Jetstream/Button'
+    import JetConfirmationModal from '@/Jetstream/ConfirmationModal'
+    import JetDangerButton from '@/Jetstream/DangerButton'
+    import JetDialogModal from '@/Jetstream/DialogModal'
+    import JetFormSection from '@/Jetstream/FormSection'
+    import JetInput from '@/Jetstream/Input'
+    import JetInputError from '@/Jetstream/InputError'
+    import JetLabel from '@/Jetstream/Label'
+    import JetSecondaryButton from '@/Jetstream/SecondaryButton'
+    import JetSectionBorder from '@/Jetstream/SectionBorder'
 
     export default {
         components: {
@@ -303,8 +303,9 @@
             updateRole() {
                 this.updateRoleForm.put(route('team-members.update', [this.team, this.managingRoleFor]), {
                     preserveScroll: true,
-                }).then(() => {
-                    this.currentlyManagingRole = false
+                    onSuccess: () => {
+                        this.currentlyManagingRole = false
+                    }
                 })
             },
 
@@ -313,7 +314,7 @@
             },
 
             leaveTeam() {
-                this.leaveTeamForm.delete(route('team-members.destroy', [this.team, this.$page.user]))
+                this.leaveTeamForm.delete(route('team-members.destroy', [this.team, this.$page.props.user]))
             },
 
             confirmTeamMemberRemoval(teamMember) {
@@ -324,8 +325,9 @@
                 this.removeTeamMemberForm.delete(route('team-members.destroy', [this.team, this.teamMemberBeingRemoved]), {
                     preserveScroll: true,
                     preserveState: true,
-                }).then(() => {
-                    this.teamMemberBeingRemoved = null
+                    onSuccess: () => {
+                        this.teamMemberBeingRemoved = null
+                    }
                 })
             },
 
